@@ -10,7 +10,6 @@ import os
 import time
 import subprocess
 import datetime
-import psutil
 
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 PID_TO_MONITOR = 28172
@@ -24,7 +23,8 @@ def run_cmd(args):
 
 def is_process_running(pid):
     try:
-        return psutil.pid_exists(pid)
+        res = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True)
+        return str(pid) in res.stdout
     except Exception:
         return False
 
@@ -60,13 +60,7 @@ def run_loop():
         # 4. Check training process status
         running = is_process_running(PID_TO_MONITOR)
         if running:
-            try:
-                proc = psutil.Process(PID_TO_MONITOR)
-                cpu_percent = proc.cpu_percent(interval=0.1)
-                mem = proc.memory_info().rss / (1024 * 1024)
-                print(f"  Training PID {PID_TO_MONITOR} is ACTIVE: CPU={cpu_percent:.1f}%, RAM={mem:.1f}MB")
-            except Exception:
-                print(f"  Training PID {PID_TO_MONITOR} is ACTIVE.")
+            print(f"  Training PID {PID_TO_MONITOR} is ACTIVE.")
         else:
             print(f"  Training PID {PID_TO_MONITOR} is INACTIVE / COMPLETED!")
             
