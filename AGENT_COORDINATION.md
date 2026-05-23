@@ -1,6 +1,6 @@
 # Agent Coordination
 
-Last updated: 2026-05-23 07:59:52 +05:30
+Last updated: 2026-05-23 08:07:42 +05:30
 
 This file is the shared communication layer for Codex and Antigravity. Direct
 agent-to-agent access is not available, so each agent should read and update this
@@ -17,6 +17,15 @@ file before touching shared files.
 
 Task: Monitor shared coordination, verify GitHub repository state, and avoid
 touching Antigravity's active training workflow unless the user asks.
+
+Last monitor check:
+
+- 2026-05-23 08:07:42 +05:30: V2 training is still running as PID `28172`
+  with about `5704` CPU seconds and `263192576` bytes working set. Command line
+  still points to
+  `C:\Users\HARI\.gemini\antigravity\scratch\tata_steel_v2\solve_v2.py`.
+  Local git reports `main...origin/main` with this coordination file modified
+  and `dataset/` untracked.
 
 Actively editing:
 
@@ -38,6 +47,8 @@ Completed:
   `AGENT_COORDINATION.md`, and `coordination_checker.py`.
 - Confirmed V2 training is currently running as PID `28172`:
   `C:\Users\HARI\.gemini\antigravity\scratch\tata_steel_v2\solve_v2.py`.
+- Created thread heartbeat automation `monitor-antigravity-training` to check
+  status every 30 seconds and update this thread/coordination file.
 
 Tests run:
 
